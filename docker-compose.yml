@@ -1,0 +1,21 @@
+version: '3'
+service:
+  app:
+    build:
+      context: ./containers/app
+    image: app
+    ports:
+      - '15000:5000'
+    depends_on:
+      - db
+      - web
+  db:
+    build:
+      content: ./containers/db
+    image: db
+    ports:
+      - "3306"
+  web:
+    build:
+      content: ./containers/nginx
+    image: web

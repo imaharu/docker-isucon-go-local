@@ -1,21 +1,43 @@
-version: '3'
-service:
+version: "3.7"
+services:
   app:
     build:
-      context: ./containers/app
-    image: app
+      context: ./containers/app/
+      args:
+        GIT_URL: "https://github.com/isucon/isucon7-qualify.git"
+    tty: true
     ports:
-      - '15000:5000'
+      - "5000"
+    environment:
+      ISUBATA_DB_USER: isucon
+      ISUBATA_DB_PASSWORD: isucon
+      ISUBATA_DB_HOST: db
     depends_on:
       - db
-      - web
+    networks:
+      - backend
   db:
     build:
-      content: ./containers/db
-    image: db
+      context: ./containers/db
+      args:
+        GIT_URL: "https://github.com/isucon/isucon7-qualify.git"
+    tty: true
     ports:
       - "3306"
+    networks:
+      - backend
   web:
     build:
-      content: ./containers/nginx
-    image: web
+      context: ./containers/nginx
+    tty: true
+    depends_on:
+      - app
+    ports:
+      - "3000:80"
+    networks:
+      - frontend
+      - backend
+
+networks:
+  frontend:
+  backend:

@@ -7,37 +7,36 @@ services:
         GIT_URL: "https://github.com/isucon/isucon7-qualify.git"
     tty: true
     ports:
-      - "5000"
+      - "5000:5000"
+    expose:
+      - 5000
     environment:
       ISUBATA_DB_USER: isucon
       ISUBATA_DB_PASSWORD: isucon
       ISUBATA_DB_HOST: db
+    working_dir: /home/isucon/isubata/webapp/go
+    command: bash -c 'make && ./isubata'
     depends_on:
       - db
-    networks:
-      - backend
   db:
     build:
       context: ./containers/db
       args:
         GIT_URL: "https://github.com/isucon/isucon7-qualify.git"
     tty: true
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
       - "3306"
-    networks:
-      - backend
+    expose:
+      - 3306
   web:
     build:
       context: ./containers/nginx
+      args:
+        GIT_URL: "https://github.com/isucon/isucon7-qualify.git"
     tty: true
     depends_on:
       - app
     ports:
-      - "3000:80"
-    networks:
-      - frontend
-      - backend
-
-networks:
-  frontend:
-  backend:
+      - "1080:80"

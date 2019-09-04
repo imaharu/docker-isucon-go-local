@@ -6,8 +6,6 @@ services:
       args:
         GIT_URL: "https://github.com/isucon/isucon7-qualify.git"
     tty: true
-    ports:
-      - "5000:5000"
     expose:
       - 5000
     environment:
@@ -27,9 +25,7 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
-      - "3306"
-    expose:
-      - 3306
+      - "13306:3306"
   web:
     build:
       context: ./containers/nginx

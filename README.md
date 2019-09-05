@@ -7,6 +7,5 @@ $ docker-compose exec db bash
 # pwd
 /home
 # ./db/init.sh
-# mysql < setToInsertData.txt ## いらないかも
-# zcat  zcat db/init.sql.gz | mysql isubata
+# zcat db/init.sql.gz | mysql isubata
 ```
